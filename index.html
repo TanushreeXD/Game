@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayVerse - Create & Play Games</title>
+    <title>GameForge - Create & Host Your Games</title>
     <style>
         * {
             margin: 0;
@@ -11,9 +11,19 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary: #ff006e;
+            --secondary: #8338ec;
+            --accent: #3a86ff;
+            --success: #06ffa5;
+            --warning: #ffbe0b;
+            --dark: #0a0e27;
+            --light: #f0f0f0;
+        }
+
         body {
-            font-family: 'Poppins', 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #16213e 100%);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a1f3a 100%);
             color: #e0e0e0;
             min-height: 100vh;
         }
@@ -22,18 +32,17 @@
         header {
             background: rgba(10, 14, 39, 0.95);
             backdrop-filter: blur(10px);
-            border-bottom: 2px solid #00d4ff;
-            padding: 15px 0;
+            border-bottom: 3px solid var(--primary);
+            padding: 15px 20px;
             position: sticky;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(255, 0, 110, 0.2);
         }
 
         .header-content {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -45,41 +54,77 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        /* Navigation */
         nav {
             display: flex;
-            gap: 25px;
+            gap: 20px;
         }
 
         nav a {
             color: #e0e0e0;
             text-decoration: none;
-            font-size: 0.95em;
-            transition: color 0.3s;
             font-weight: 500;
+            transition: color 0.3s;
         }
 
         nav a:hover {
-            color: #00d4ff;
+            color: var(--primary);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-nav {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-login {
+            background: transparent;
+            color: #e0e0e0;
+            border: 2px solid #e0e0e0;
+        }
+
+        .btn-login:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-signup {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-signup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 0, 110, 0.4);
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
         /* Hero Section */
         .hero {
-            padding: 100px 20px;
+            padding: 80px 20px;
             text-align: center;
-            background: linear-gradient(180deg, rgba(0, 212, 255, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+            background: linear-gradient(180deg, rgba(255, 0, 110, 0.1) 0%, rgba(131, 56, 236, 0.1) 100%);
             border-radius: 20px;
             margin: 40px 0;
         }
@@ -87,11 +132,10 @@
         .hero h1 {
             font-size: 4em;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
         }
 
         .hero p {
@@ -100,24 +144,50 @@
             color: #b0b0b0;
         }
 
-        .cta-button {
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
             display: inline-block;
-            background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
             padding: 15px 40px;
-            border-radius: 10px;
+            border-radius: 12px;
             text-decoration: none;
             font-size: 1.1em;
             font-weight: bold;
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
             border: none;
-            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(255, 0, 110, 0.3);
         }
 
-        .cta-button:hover {
+        .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(0, 212, 255, 0.5);
+            box-shadow: 0 12px 30px rgba(255, 0, 110, 0.5);
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            background: transparent;
+            color: var(--accent);
+            padding: 15px 40px;
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent);
+            color: white;
         }
 
         /* Section */
@@ -129,7 +199,7 @@
             font-size: 2.5em;
             margin-bottom: 40px;
             text-align: center;
-            background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -137,157 +207,25 @@
             letter-spacing: 2px;
         }
 
-        /* Games Grid */
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .game-card {
-            background: linear-gradient(135deg, #1a1f3a 0%, #2d2d5f 100%);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-            border: 2px solid #00d4ff;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .game-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 1;
-        }
-
-        .game-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.3);
-            border-color: #7c3aed;
-        }
-
-        .game-card:hover::before {
-            opacity: 1;
-        }
-
-        .game-image {
-            height: 200px;
-            background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4em;
-            color: white;
-            position: relative;
-            z-index: 2;
-        }
-
-        .game-info {
-            padding: 25px;
-            position: relative;
-            z-index: 2;
-        }
-
-        .game-info h3 {
-            color: #00d4ff;
-            margin-bottom: 10px;
-            font-size: 1.3em;
-        }
-
-        .game-info p {
-            color: #b0b0b0;
-            margin-bottom: 15px;
-            font-size: 0.95em;
-            line-height: 1.6;
-        }
-
-        .game-stats {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9em;
-            color: #888;
-            margin-bottom: 15px;
-            padding: 10px 0;
-            border-top: 1px solid #444;
-            border-bottom: 1px solid #444;
-        }
-
-        .play-btn {
-            display: inline-block;
-            background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: transform 0.3s, box-shadow 0.3s;
-            font-size: 0.9em;
-        }
-
-        .play-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #1a1f3a 0%, #2d2d5f 100%);
-            padding: 30px;
-            border-radius: 12px;
-            text-align: center;
-            border: 2px solid #7c3aed;
-            transition: transform 0.3s, border-color 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: #00d4ff;
-        }
-
-        .stat-card h3 {
-            color: #00d4ff;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .stat-card p {
-            color: #b0b0b0;
-        }
-
         /* Features Grid */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
         }
 
         .feature-card {
             background: linear-gradient(135deg, #1a1f3a 0%, #2d2d5f 100%);
             padding: 30px;
-            border-radius: 12px;
-            text-align: center;
-            border-left: 4px solid #00d4ff;
-            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 0, 110, 0.2);
+            transition: all 0.3s;
         }
 
         .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 40px rgba(255, 0, 110, 0.2);
         }
 
         .feature-icon {
@@ -296,58 +234,308 @@
         }
 
         .feature-card h3 {
-            color: #00d4ff;
+            color: var(--primary);
             margin-bottom: 10px;
+            font-size: 1.3em;
         }
 
         .feature-card p {
             color: #b0b0b0;
+            line-height: 1.6;
         }
 
-        /* Events Container */
-        .events-container {
+        /* Editor Preview */
+        .editor-demo {
             background: linear-gradient(135deg, #1a1f3a 0%, #2d2d5f 100%);
-            padding: 40px;
             border-radius: 15px;
-            border: 2px solid #00d4ff;
+            border: 2px solid var(--primary);
+            padding: 20px;
+            margin: 40px 0;
         }
 
-        .event {
-            margin-bottom: 30px;
-            padding-bottom: 30px;
-            border-bottom: 1px solid #444;
+        .editor-header {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
-        .event:last-child {
-            border-bottom: none;
+        .editor-title {
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 8px 16px;
+            background: rgba(255, 0, 110, 0.1);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab:hover {
+            border-color: var(--primary);
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .control-btn.primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .control-btn.secondary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .control-btn.warning {
+            background: var(--warning);
+            color: #000;
+        }
+
+        .control-btn.success {
+            background: var(--success);
+            color: #000;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 110, 0.3);
+        }
+
+        .canvas-area {
+            background: linear-gradient(135deg, #87ceeb 0%, #e0f6ff 100%);
+            border-radius: 12px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-object {
+            position: absolute;
+            background: #ff006e;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: move;
+            transition: box-shadow 0.3s;
+        }
+
+        .game-object:hover {
+            box-shadow: 0 0 20px rgba(255, 0, 110, 0.6);
+        }
+
+        .player {
+            width: 40px;
+            height: 40px;
+            left: 50%;
+            top: 70%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .platform {
+            width: 200px;
+            height: 20px;
+            left: 0;
+            bottom: 0;
+            background: #8b4513;
+            border-radius: 0;
+        }
+
+        .obstacle {
+            width: 60px;
+            height: 60px;
+            left: 40%;
+            top: 30%;
+            background: #333;
+        }
+
+        .controls-panel {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .control-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .control-group:last-child {
             margin-bottom: 0;
-            padding-bottom: 0;
         }
 
-        .event h3 {
-            color: #00d4ff;
+        .control-btn-small {
+            padding: 10px;
+            border: 2px solid #666;
+            border-radius: 8px;
+            background: rgba(255, 0, 110, 0.1);
+            color: #e0e0e0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .control-btn-small:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .pricing-card {
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d2d5f 100%);
+            border: 2px solid rgba(255, 0, 110, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 40px rgba(255, 0, 110, 0.2);
+        }
+
+        .pricing-card.popular {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .pricing-card h3 {
+            color: var(--primary);
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 3em;
+            color: var(--secondary);
             margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .price-period {
+            color: #b0b0b0;
+            margin-bottom: 20px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .features-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #444;
+            color: #b0b0b0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features-list li:before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
             font-size: 1.2em;
         }
 
-        .event p {
-            color: #b0b0b0;
-            margin-bottom: 5px;
+        .features-list li:last-child {
+            border-bottom: none;
         }
 
-        .event-date {
-            color: #7c3aed;
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .testimonial-card {
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d2d5f 100%);
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .testimonial-text {
+            color: #b0b0b0;
+            margin-bottom: 15px;
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .testimonial-author {
+            color: var(--primary);
             font-weight: bold;
+        }
+
+        .testimonial-role {
+            color: #888;
+            font-size: 0.9em;
         }
 
         /* Footer */
         footer {
             background: rgba(10, 14, 39, 0.95);
-            color: #888;
-            text-align: center;
+            border-top: 2px solid var(--primary);
             padding: 40px 20px;
             margin-top: 80px;
-            border-top: 2px solid #00d4ff;
+            text-align: center;
+            color: #888;
         }
 
         footer p {
@@ -359,7 +547,7 @@
         }
 
         .social-links a {
-            color: #00d4ff;
+            color: var(--primary);
             text-decoration: none;
             margin: 0 15px;
             font-weight: bold;
@@ -367,7 +555,7 @@
         }
 
         .social-links a:hover {
-            color: #7c3aed;
+            color: var(--secondary);
         }
 
         /* Responsive */
@@ -380,15 +568,15 @@
             nav {
                 flex-wrap: wrap;
                 justify-content: center;
-                gap: 15px;
+                gap: 10px;
             }
 
             .hero h1 {
                 font-size: 2.5em;
             }
 
-            .section h2 {
-                font-size: 2em;
+            .pricing-card.popular {
+                transform: scale(1);
             }
         }
     </style>
@@ -399,214 +587,268 @@
         <div class="header-content">
             <div class="logo">
                 <span>🎮</span>
-                <span>PlayVerse</span>
+                <span>GameForge</span>
             </div>
             <nav>
-                <a href="#games">Games</a>
                 <a href="#features">Features</a>
-                <a href="#community">Community</a>
-                <a href="#events">Events</a>
-                <a href="#contact">Contact</a>
+                <a href="#editor">Editor</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#docs">Docs</a>
             </nav>
+            <div class="auth-buttons">
+                <button class="btn-nav btn-login">Login</button>
+                <button class="btn-nav btn-signup">Sign Up Free</button>
+            </div>
         </div>
     </header>
 
     <!-- Hero Section -->
     <section class="hero">
-        <h1>PlayVerse</h1>
-        <p>The Ultimate Platform to Create, Play, and Share Amazing Games</p>
-        <button class="cta-button">Start Creating Now</button>
+        <h1>Create Games Without Coding</h1>
+        <p>Design 2D & 3D games with our powerful visual editor. Publish with your own custom domain.</p>
+        <div class="cta-buttons">
+            <button class="btn-primary">Start Creating Now</button>
+            <button class="btn-secondary">Watch Tutorial</button>
+        </div>
     </section>
 
     <div class="container">
-        <!-- Featured Games -->
-        <section class="section" id="games">
-            <h2>✨ Trending Games</h2>
-            <div class="games-grid">
-                <div class="game-card">
-                    <div class="game-image">🏗️</div>
-                    <div class="game-info">
-                        <h3>World Builder</h3>
-                        <p>Create expansive worlds with infinite possibilities and unique mechanics</p>
-                        <div class="game-stats">
-                            <span>👥 1.8M Playing</span>
-                            <span>⭐ 4.9/5</span>
-                        </div>
-                        <a href="#" class="play-btn">Play</a>
-                    </div>
-                </div>
-
-                <div class="game-card">
-                    <div class="game-image">⚡</div>
-                    <div class="game-info">
-                        <h3>Thunder Arena</h3>
-                        <p>Fast-paced action battles with stunning visual effects</p>
-                        <div class="game-stats">
-                            <span>👥 3.2M Playing</span>
-                            <span>⭐ 4.8/5</span>
-                        </div>
-                        <a href="#" class="play-btn">Play</a>
-                    </div>
-                </div>
-
-                <div class="game-card">
-                    <div class="game-image">🏃</div>
-                    <div class="game-info">
-                        <h3>Speedrun Legends</h3>
-                        <p>Challenge yourself with progressively harder speedrunning levels</p>
-                        <div class="game-stats">
-                            <span>👥 2.1M Playing</span>
-                            <span>⭐ 4.7/5</span>
-                        </div>
-                        <a href="#" class="play-btn">Play</a>
-                    </div>
-                </div>
-
-                <div class="game-card">
-                    <div class="game-image">🌍</div>
-                    <div class="game-info">
-                        <h3>Social City</h3>
-                        <p>Explore, interact, and create memories with players worldwide</p>
-                        <div class="game-stats">
-                            <span>👥 2.9M Playing</span>
-                            <span>⭐ 4.6/5</span>
-                        </div>
-                        <a href="#" class="play-btn">Play</a>
-                    </div>
-                </div>
-
-                <div class="game-card">
-                    <div class="game-image">💼</div>
-                    <div class="game-info">
-                        <h3>Business Genius</h3>
-                        <p>Build your empire from scratch and compete in the market</p>
-                        <div class="game-stats">
-                            <span>👥 1.5M Playing</span>
-                            <span>⭐ 4.8/5</span>
-                        </div>
-                        <a href="#" class="play-btn">Play</a>
-                    </div>
-                </div>
-
-                <div class="game-card">
-                    <div class="game-image">🎨</div>
-                    <div class="game-info">
-                        <h3>Creative Studio</h3>
-                        <p>Express yourself with unlimited art tools and canvas freedom</p>
-                        <div class="game-stats">
-                            <span>👥 1.2M Playing</span>
-                            <span>⭐ 4.9/5</span>
-                        </div>
-                        <a href="#" class="play-btn">Play</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Platform Stats -->
-        <section class="section" id="community">
-            <h2>📊 Join Our Platform</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3>180M+</h3>
-                    <p>Monthly Players</p>
-                </div>
-                <div class="stat-card">
-                    <h3>25M+</h3>
-                    <p>Games Created</p>
-                </div>
-                <div class="stat-card">
-                    <h3>420K+</h3>
-                    <p>Active Creators</p>
-                </div>
-                <div class="stat-card">
-                    <h3>$500M+</h3>
-                    <p>Creator Earnings</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features -->
+        <!-- Features Section -->
         <section class="section" id="features">
-            <h2>🚀 Platform Features</h2>
+            <h2>🚀 Powerful Features</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <div class="feature-icon">🛠️</div>
-                    <h3>Easy Game Builder</h3>
-                    <p>Intuitive drag-and-drop tools that make game creation accessible to everyone</p>
+                    <div class="feature-icon">🎨</div>
+                    <h3>Visual Editor</h3>
+                    <p>Drag-and-drop game builder with intuitive controls. No coding experience needed.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>2D & 3D Support</h3>
+                    <p>Create stunning 2D platformers, puzzles, or dive into 3D game development.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🌐</div>
-                    <h3>Global Community</h3>
-                    <p>Connect with millions of players and creators from around the world</p>
+                    <h3>Custom Domain</h3>
+                    <p>Host your game on customname.gameforge.app or bring your own domain.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">💰</div>
-                    <h3>Earn Money</h3>
-                    <p>Monetize your games and earn real revenue from your creations</p>
+                    <h3>Monetization</h3>
+                    <p>Earn revenue through ads, in-game purchases, and premium features.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <h3>Multiplayer Ready</h3>
+                    <p>Built-in multiplayer networking for real-time gameplay experiences.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Track players, engagement, revenue, and optimize your games in real-time.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">🎯</div>
-                    <h3>Advanced Analytics</h3>
-                    <p>Track player engagement and optimize your games with detailed metrics</p>
+                    <h3>Asset Store</h3>
+                    <p>Access thousands of sprites, sounds, and 3D models to speed up development.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>Cross-Platform</h3>
-                    <p>Play on PC, mobile, tablets, and VR devices seamlessly</p>
+                    <div class="feature-icon">🔒</div>
+                    <h3>Cloud Saved Games</h3>
+                    <p>Automatic cloud saves keep player progress safe across all devices.</p>
                 </div>
                 <div class="feature-card">
-                    <div class="feature-icon">🔐</div>
-                    <h3>Safe & Secure</h3>
-                    <p>Enterprise-grade security to protect your games and player data</p>
+                    <div class="feature-icon">⚡</div>
+                    <h3>Instant Publishing</h3>
+                    <p>Go live in seconds. No app store approval needed.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Events Section -->
-        <section class="section" id="events">
-            <h2>📅 Upcoming Events</h2>
-            <div class="events-container">
-                <div class="event">
-                    <h3>🎪 Creator Showcase 2025</h3>
-                    <p>Join our biggest showcase event where creators display their latest and greatest games!</p>
-                    <p class="event-date">📍 July 1-31, 2025</p>
+        <!-- Editor Preview -->
+        <section class="section" id="editor">
+            <h2>✨ The GameForge Editor</h2>
+            <div class="editor-demo">
+                <div class="editor-header">
+                    <div class="editor-title">🎮 My First Game</div>
+                    <div class="tabs">
+                        <div class="tab active">Scene</div>
+                        <div class="tab">Code</div>
+                        <div class="tab">Assets</div>
+                        <div class="tab">Settings</div>
+                    </div>
+                    <div class="controls">
+                        <button class="control-btn primary">▶ Test</button>
+                        <button class="control-btn secondary">💾 Save</button>
+                        <button class="control-btn warning">🌐 Publish</button>
+                    </div>
                 </div>
-                <div class="event">
-                    <h3>🏆 Global Dev Challenge</h3>
-                    <p>Compete with creators worldwide for amazing prizes and recognition in the community</p>
-                    <p class="event-date">📍 August 5 - September 5, 2025</p>
+
+                <div class="canvas-area">
+                    <div class="game-object platform"></div>
+                    <div class="game-object obstacle">🧱</div>
+                    <div class="game-object player">🕹️</div>
+                    📍 Click and drag objects to edit your game
                 </div>
-                <div class="event">
-                    <h3>🎮 Player Fest</h3>
-                    <p>Massive gaming festival featuring exclusive games, tournaments, and giveaways</p>
-                    <p class="event-date">📍 September 15-22, 2025</p>
-                </div>
-                <div class="event">
-                    <h3>✨ Innovation Summit</h3>
-                    <p>Learn from industry experts and network with leading game developers</p>
-                    <p class="event-date">📍 October 10-12, 2025</p>
+
+                <div class="controls-panel">
+                    <div class="control-group">
+                        <button class="control-btn-small">⬆️ UP</button>
+                        <button class="control-btn-small">⬅️ LEFT</button>
+                        <button class="control-btn-small">➡️ RIGHT</button>
+                        <button class="control-btn-small">⬇️ DOWN</button>
+                    </div>
+                    <div class="control-group">
+                        <button class="control-btn-small">🅰️ A</button>
+                        <button class="control-btn-small">🅱️ B</button>
+                        <button class="control-btn-small">🔄 Start</button>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Contact Section -->
-        <section class="section" id="contact">
-            <h2>📞 Get Connected</h2>
-            <div style="background: linear-gradient(135deg, #1a1f3a 0%, #2d2d5f 100%); padding: 40px; border-radius: 15px; text-align: center; border: 2px solid #00d4ff;">
-                <p style="font-size: 1.1em; margin-bottom: 20px; color: #e0e0e0;">Ready to start your journey with PlayVerse?</p>
-                <p style="margin-bottom: 10px;">📧 <strong>Email:</strong> hello@playverse.io</p>
-                <p style="margin-bottom: 10px;">💬 <strong>Discord:</strong> Join our community server</p>
-                <p style="margin-bottom: 20px;">🌐 <strong>Website:</strong> www.playverse.io</p>
-                <button class="cta-button">Contact Us</button>
+        <!-- Pricing Section -->
+        <section class="section" id="pricing">
+            <h2>💳 Simple Pricing</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Starter</h3>
+                    <div class="price">$0</div>
+                    <div class="price-period">Forever Free</div>
+                    <ul class="features-list">
+                        <li>1 game project</li>
+                        <li>2D game creation</li>
+                        <li>Standard domain</li>
+                        <li>Basic analytics</li>
+                        <li>1GB storage</li>
+                        <li>Community support</li>
+                    </ul>
+                    <button class="btn-primary">Get Started</button>
+                </div>
+
+                <div class="pricing-card popular">
+                    <h3>Creator</h3>
+                    <div class="price">$9.99</div>
+                    <div class="price-period">per month</div>
+                    <ul class="features-list">
+                        <li>Unlimited projects</li>
+                        <li>2D & 3D games</li>
+                        <li>Custom domain</li>
+                        <li>Advanced analytics</li>
+                        <li>100GB storage</li>
+                        <li>Email support</li>
+                        <li>Multiplayer ready</li>
+                        <li>Monetization tools</li>
+                    </ul>
+                    <button class="btn-primary">Start Free Trial</button>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Studio</h3>
+                    <div class="price">$49.99</div>
+                    <div class="price-period">per month</div>
+                    <ul class="features-list">
+                        <li>Unlimited projects</li>
+                        <li>2D & 3D games</li>
+                        <li>Multiple domains</li>
+                        <li>Real-time analytics</li>
+                        <li>Unlimited storage</li>
+                        <li>Priority support</li>
+                        <li>API access</li>
+                        <li>White-label option</li>
+                        <li>Custom integrations</li>
+                    </ul>
+                    <button class="btn-primary">Contact Sales</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="section">
+            <h2>💬 What Creators Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "GameForge made it so easy to publish my game idea! I had my first game live in just 2 hours with my custom domain. Best tool ever!"
+                    </div>
+                    <div class="testimonial-author">Alex Johnson</div>
+                    <div class="testimonial-role">Indie Game Developer</div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "The visual editor is incredible. I'm not a programmer, but I managed to create a fun 3D game. The monetization features are game-changers!"
+                    </div>
+                    <div class="testimonial-author">Maria Chen</div>
+                    <div class="testimonial-role">Game Creator</div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "Our game reached 100k players in one month. The analytics and built-in multiplayer support helped us understand and serve our community better."
+                    </div>
+                    <div class="testimonial-author">Tom Rodriguez</div>
+                    <div class="testimonial-role">Game Studio Founder</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documentation -->
+        <section class="section">
+            <h2>📚 Get Started in 3 Steps</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px;">
+                <div style="background: linear-gradient(135deg, #1a1f3a 0%, #2d2d5f 100%); padding: 30px; border-radius: 15px; border-left: 4px solid var(--primary); text-align: center;">
+                    <div style="font-size: 3em; margin-bottom: 15px;">1️⃣</div>
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">Sign Up</h3>
+                    <p style="color: #b0b0b0;">Create your free GameForge account in seconds</p>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #1a1f3a 0%, #2d2d5f 100%); padding: 30px; border-radius: 15px; border-left: 4px solid var(--secondary); text-align: center;">
+                    <div style="font-size: 3em; margin-bottom: 15px;">2️⃣</div>
+                    <h3 style="color: var(--secondary); margin-bottom: 10px;">Create Your Game</h3>
+                    <p style="color: #b0b0b0;">Use our visual editor to build 2D or 3D games</p>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #1a1f3a 0%, #2d2d5f 100%); padding: 30px; border-radius: 15px; border-left: 4px solid var(--accent); text-align: center;">
+                    <div style="font-size: 3em; margin-bottom: 15px;">3️⃣</div>
+                    <h3 style="color: var(--accent); margin-bottom: 10px;">Publish & Earn</h3>
+                    <p style="color: #b0b0b0;">Go live with your custom domain and start earning</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Domain Info -->
+        <section class="section" style="background: linear-gradient(135deg, rgba(255, 0, 110, 0.1) 0%, rgba(131, 56, 236, 0.1) 100%); padding: 40px; border-radius: 20px; border: 2px solid var(--primary);">
+            <h2>🌐 Your Own Domain</h2>
+            <div style="text-align: center;">
+                <p style="font-size: 1.3em; margin-bottom: 30px; color: #b0b0b0;">
+                    Host your games on your unique GameForge domain or connect your own!
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div style="background: rgba(255, 0, 110, 0.1); padding: 20px; border-radius: 12px; border: 2px dashed var(--primary);">
+                        <h4 style="color: var(--primary); margin-bottom: 10px;">🎮 GameForge Domain</h4>
+                        <code style="color: var(--accent); font-weight: bold;">https://yournickname.gameforge.app</code>
+                        <p style="color: #888; font-size: 0.9em; margin-top: 10px;">Free with all plans</p>
+                    </div>
+                    <div style="background: rgba(131, 56, 236, 0.1); padding: 20px; border-radius: 12px; border: 2px dashed var(--secondary);">
+                        <h4 style="color: var(--secondary); margin-bottom: 10px;">🌟 Custom Domain (.io)</h4>
+                        <code style="color: var(--accent); font-weight: bold;">https://yourgame.io</code>
+                        <p style="color: #888; font-size: 0.9em; margin-top: 10px;">Available on Creator+ plans</p>
+                    </div>
+                    <div style="background: rgba(58, 134, 255, 0.1); padding: 20px; border-radius: 12px; border: 2px dashed var(--accent);">
+                        <h4 style="color: var(--accent); margin-bottom: 10px;">🔗 Your Own Domain</h4>
+                        <code style="color: var(--accent); font-weight: bold;">https://www.yourdomain.com</code>
+                        <p style="color: #888; font-size: 0.9em; margin-top: 10px;">Full DNS control on Studio plan</p>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2025 PlayVerse. All rights reserved.</p>
-        <p>Create • Play • Earn • Connect</p>
+        <p>&copy; 2025 GameForge. The future of game creation.</p>
+        <p>Create • Design • Publish • Earn</p>
         <div class="social-links">
             <a href="#">🐦 Twitter</a>
             <a href="#">📘 Facebook</a>
