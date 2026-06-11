@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Community</title>
+    <title>Roblox Community Hub</title>
     <style>
         * {
             margin: 0;
@@ -12,231 +12,496 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
             min-height: 100vh;
         }
 
+        /* Header */
         header {
-            background-color: rgba(0, 0, 0, 0.8);
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
             color: white;
             padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
-        header h1 {
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
             font-size: 2.5em;
-            margin-bottom: 10px;
         }
 
-        header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
+        /* Navigation */
         nav {
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 15px 0;
-            text-align: center;
+            display: flex;
+            gap: 30px;
         }
 
         nav a {
             color: white;
             text-decoration: none;
-            margin: 0 20px;
             font-size: 1.1em;
             transition: color 0.3s;
+            font-weight: 500;
         }
 
         nav a:hover {
-            color: #667eea;
+            color: #ffd700;
         }
 
         .container {
             max-width: 1200px;
-            margin: 40px auto;
+            margin: 0 auto;
             padding: 0 20px;
         }
 
-        .section {
-            background-color: white;
-            padding: 30px;
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1e1e1e 0%, #2d2d2d 100%);
+            padding: 80px 20px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            color: #e74c3c;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.3em;
             margin-bottom: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            color: #b0b0b0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 60px;
         }
 
         .section h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            font-size: 2em;
+            font-size: 2.5em;
+            color: #e74c3c;
+            margin-bottom: 40px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
+        /* Games Grid */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
         }
 
         .game-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
+            background: linear-gradient(135deg, #2d2d2d 0%, #3d3d3d 100%);
+            border-radius: 10px;
+            overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid #e74c3c;
+            cursor: pointer;
         }
 
         .game-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(231, 76, 60, 0.3);
         }
 
-        .game-card h3 {
-            margin-bottom: 10px;
-            font-size: 1.5em;
-        }
-
-        .members {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .member {
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            border-left: 4px solid #667eea;
-        }
-
-        .member h4 {
-            color: #667eea;
-            margin-bottom: 5px;
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: #667eea;
+        .game-image {
+            height: 200px;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
             color: white;
-            padding: 10px 20px;
+        }
+
+        .game-info {
+            padding: 20px;
+        }
+
+        .game-info h3 {
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .game-info p {
+            color: #b0b0b0;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #888;
+            margin-bottom: 15px;
+        }
+
+        .play-btn {
+            display: inline-block;
+            background-color: #e74c3c;
+            color: white;
+            padding: 8px 15px;
             border-radius: 5px;
             text-decoration: none;
-            margin-top: 15px;
+            font-weight: bold;
             transition: background-color 0.3s;
         }
 
-        .btn:hover {
-            background-color: #764ba2;
+        .play-btn:hover {
+            background-color: #c0392b;
         }
 
-        footer {
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
+        /* Community Section */
+        .community-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .community-card {
+            background: linear-gradient(135deg, #2d2d2d 0%, #3d3d3d 100%);
+            padding: 25px;
+            border-radius: 10px;
             text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
+            border-left: 4px solid #e74c3c;
+            transition: transform 0.3s;
+        }
+
+        .community-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .community-card h3 {
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .community-card p {
+            color: #b0b0b0;
+            font-size: 0.95em;
+        }
+
+        /* Events Section */
+        .events-container {
+            background: linear-gradient(135deg, #2d2d2d 0%, #3d3d3d 100%);
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 5px solid #e74c3c;
+        }
+
+        .event {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #444;
+        }
+
+        .event:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .event h3 {
+            color: #ffd700;
+            margin-bottom: 8px;
+        }
+
+        .event p {
+            color: #b0b0b0;
+            margin-bottom: 5px;
+        }
+
+        .event-date {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #888;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+            border-top: 2px solid #e74c3c;
         }
 
         footer p {
-            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: #e74c3c;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #ffd700;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .section h2 {
+                font-size: 2em;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header>
-        <h1>🎮 Game Community</h1>
-        <p>Join the Ultimate Gaming Experience</p>
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🎮</span>
+                <span>ROBLOX HUB</span>
+            </div>
+            <nav>
+                <a href="#games">Games</a>
+                <a href="#community">Community</a>
+                <a href="#events">Events</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
     </header>
 
-    <nav>
-        <a href="#games">Games</a>
-        <a href="#members">Members</a>
-        <a href="#events">Events</a>
-        <a href="#contact">Contact</a>
-    </nav>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Welcome to ROBLOX Community Hub</h1>
+        <p>Explore millions of games, connect with players worldwide, and create your own adventures!</p>
+        <button class="cta-button">Join Now</button>
+    </section>
 
     <div class="container">
-        <!-- Games Section -->
-        <div class="section" id="games">
-            <h2>Featured Games</h2>
+        <!-- Featured Games -->
+        <section class="section" id="games">
+            <h2>🎯 Featured Games</h2>
             <div class="games-grid">
                 <div class="game-card">
-                    <h3>⚔️ Battle Arena</h3>
-                    <p>Intense multiplayer combat experience</p>
-                    <a href="#" class="btn">Play Now</a>
+                    <div class="game-image">🏗️</div>
+                    <div class="game-info">
+                        <h3>Build Simulator</h3>
+                        <p>Create amazing structures and share with the community</p>
+                        <div class="game-stats">
+                            <span>👥 2.5M Players</span>
+                            <span>⭐ 4.8/5</span>
+                        </div>
+                        <a href="#" class="play-btn">Play Now</a>
+                    </div>
                 </div>
-                <div class="game-card">
-                    <h3>🚀 Space Quest</h3>
-                    <p>Explore the galaxy and complete missions</p>
-                    <a href="#" class="btn">Play Now</a>
-                </div>
-                <div class="game-card">
-                    <h3>🏰 Kingdom Legends</h3>
-                    <p>Build your empire and conquer territories</p>
-                    <a href="#" class="btn">Play Now</a>
-                </div>
-                <div class="game-card">
-                    <h3>🧩 Puzzle Master</h3>
-                    <p>Challenge your mind with brain teasers</p>
-                    <a href="#" class="btn">Play Now</a>
-                </div>
-            </div>
-        </div>
 
-        <!-- Members Section -->
-        <div class="section" id="members">
-            <h2>Community Members</h2>
-            <div class="members">
-                <div class="member">
-                    <h4>👤 Player1</h4>
-                    <p>Level: 50</p>
-                    <p>Games Played: 150</p>
+                <div class="game-card">
+                    <div class="game-image">⚔️</div>
+                    <div class="game-info">
+                        <h3>Battle Royale</h3>
+                        <p>Compete against players in epic multiplayer combat</p>
+                        <div class="game-stats">
+                            <span>👥 5.2M Players</span>
+                            <span>⭐ 4.9/5</span>
+                        </div>
+                        <a href="#" class="play-btn">Play Now</a>
+                    </div>
                 </div>
-                <div class="member">
-                    <h4>👤 Player2</h4>
-                    <p>Level: 45</p>
-                    <p>Games Played: 120</p>
+
+                <div class="game-card">
+                    <div class="game-image">🏃</div>
+                    <div class="game-info">
+                        <h3>Obstacle Course</h3>
+                        <p>Race through challenging obstacles and beat your friends</p>
+                        <div class="game-stats">
+                            <span>👥 3.1M Players</span>
+                            <span>⭐ 4.7/5</span>
+                        </div>
+                        <a href="#" class="play-btn">Play Now</a>
+                    </div>
                 </div>
-                <div class="member">
-                    <h4>👤 Player3</h4>
-                    <p>Level: 60</p>
-                    <p>Games Played: 200</p>
+
+                <div class="game-card">
+                    <div class="game-image">🎭</div>
+                    <div class="game-info">
+                        <h3>Roleplay City</h3>
+                        <p>Live out your fantasy in an immersive roleplay world</p>
+                        <div class="game-stats">
+                            <span>👥 4.8M Players</span>
+                            <span>⭐ 4.6/5</span>
+                        </div>
+                        <a href="#" class="play-btn">Play Now</a>
+                    </div>
                 </div>
-                <div class="member">
-                    <h4>👤 Player4</h4>
-                    <p>Level: 35</p>
-                    <p>Games Played: 85</p>
+
+                <div class="game-card">
+                    <div class="game-image">🏎️</div>
+                    <div class="game-info">
+                        <h3>Driving Simulator</h3>
+                        <p>Experience realistic driving with luxury and exotic vehicles</p>
+                        <div class="game-stats">
+                            <span>👥 3.9M Players</span>
+                            <span>⭐ 4.5/5</span>
+                        </div>
+                        <a href="#" class="play-btn">Play Now</a>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-image">🏰</div>
+                    <div class="game-info">
+                        <h3>Tycoon Empire</h3>
+                        <p>Build your business empire and become a tycoon</p>
+                        <div class="game-stats">
+                            <span>👥 2.3M Players</span>
+                            <span>⭐ 4.7/5</span>
+                        </div>
+                        <a href="#" class="play-btn">Play Now</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        <!-- Community Section -->
+        <section class="section" id="community">
+            <h2>👥 Community Stats</h2>
+            <div class="community-grid">
+                <div class="community-card">
+                    <h3>250M+</h3>
+                    <p>Monthly Active Users</p>
+                </div>
+                <div class="community-card">
+                    <h3>30M+</h3>
+                    <p>Games Created</p>
+                </div>
+                <div class="community-card">
+                    <h3>500K+</h3>
+                    <p>Active Developers</p>
+                </div>
+                <div class="community-card">
+                    <h3>1B+</h3>
+                    <p>Items in Catalog</p>
+                </div>
+            </div>
+        </section>
 
         <!-- Events Section -->
-        <div class="section" id="events">
-            <h2>Upcoming Events</h2>
-            <p><strong>🏆 Tournament Season:</strong> Join our monthly gaming tournaments with exciting prizes!</p>
-            <p><strong>🎯 Weekly Challenges:</strong> Complete challenges and earn exclusive rewards.</p>
-            <p><strong>👥 Community Meetups:</strong> Connect with fellow gamers every weekend.</p>
-            <a href="#" class="btn">View All Events</a>
-        </div>
+        <section class="section" id="events">
+            <h2>📅 Upcoming Events</h2>
+            <div class="events-container">
+                <div class="event">
+                    <h3>🎪 Summer Festival 2025</h3>
+                    <p>Join the biggest summer celebration with exclusive rewards and limited-time games!</p>
+                    <p class="event-date">📍 June 21 - July 31, 2025</p>
+                </div>
+                <div class="event">
+                    <h3>🏆 Developer Championship</h3>
+                    <p>Showcase your game development skills and compete for amazing prizes worth $100,000!</p>
+                    <p class="event-date">📍 July 15 - August 15, 2025</p>
+                </div>
+                <div class="event">
+                    <h3>🎮 Community Game Jam</h3>
+                    <p>Create games with your friends in this 48-hour gaming marathon!</p>
+                    <p class="event-date">📍 August 1-3, 2025</p>
+                </div>
+                <div class="event">
+                    <h3>✨ Creator Summit</h3>
+                    <p>Meet other creators, learn new skills, and network with the ROBLOX team!</p>
+                    <p class="event-date">📍 August 20-22, 2025</p>
+                </div>
+            </div>
+        </section>
 
         <!-- Contact Section -->
-        <div class="section" id="contact">
-            <h2>Get in Touch</h2>
-            <p>Have questions or want to join our community?</p>
-            <p>📧 Email: community@gameworld.com</p>
-            <p>💬 Discord: Join our Discord server for live chat</p>
-            <a href="#" class="btn">Contact Us</a>
-        </div>
+        <section class="section" id="contact">
+            <h2>📞 Get in Touch</h2>
+            <div style="background: linear-gradient(135deg, #2d2d2d 0%, #3d3d3d 100%); padding: 40px; border-radius: 10px; text-align: center;">
+                <p style="font-size: 1.1em; margin-bottom: 20px;">Have questions or want to join the ROBLOX community?</p>
+                <p style="margin-bottom: 10px;">📧 <strong>Email:</strong> support@roblox.com</p>
+                <p style="margin-bottom: 10px;">💬 <strong>Discord:</strong> Join our Discord server for live support</p>
+                <p style="margin-bottom: 20px;">🌐 <strong>Website:</strong> www.roblox.com</p>
+                <button class="cta-button">Contact Support</button>
+            </div>
+        </section>
     </div>
 
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Game Community. All rights reserved. | Bringing gamers together! 🎮</p>
+        <p>&copy; 2025 ROBLOX Community Hub. All rights reserved.</p>
+        <p>Build it. Play it. Earn it.</p>
+        <div class="social-links">
+            <a href="#">🐦 Twitter</a>
+            <a href="#">📘 Facebook</a>
+            <a href="#">🎵 YouTube</a>
+            <a href="#">💬 Discord</a>
+        </div>
     </footer>
 </body>
 </html>
