@@ -28,6 +28,167 @@
             min-height: 100vh;
         }
 
+        /* Modal Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: linear-gradient(135deg, #1a1f3a 0%, #2d2d5f 100%);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(255, 0, 110, 0.3);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-header h2 {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .modal-header p {
+            color: #b0b0b0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e0e0e0;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 0, 110, 0.1);
+            border: 2px solid rgba(255, 0, 110, 0.3);
+            border-radius: 10px;
+            color: #e0e0e0;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 0, 110, 0.2);
+            box-shadow: 0 0 15px rgba(255, 0, 110, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: #888;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .btn-submit {
+            flex: 1;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 0, 110, 0.4);
+        }
+
+        .toggle-form {
+            text-align: center;
+            margin-top: 20px;
+            color: #b0b0b0;
+        }
+
+        .toggle-form a {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .toggle-form a:hover {
+            color: var(--secondary);
+        }
+
+        .error-message {
+            background: rgba(255, 0, 110, 0.2);
+            border: 1px solid var(--primary);
+            color: #ff6b9d;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background: rgba(6, 255, 165, 0.2);
+            border: 1px solid var(--success);
+            color: #06ffa5;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
         /* Header */
         header {
             background: rgba(10, 14, 39, 0.95);
@@ -112,6 +273,42 @@
         .btn-signup:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(255, 0, 110, 0.4);
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            display: none;
+        }
+
+        .user-menu.active {
+            display: flex;
+        }
+
+        .user-info {
+            color: #e0e0e0;
+        }
+
+        .user-email {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .btn-logout {
+            padding: 8px 16px;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: var(--primary);
+            color: white;
         }
 
         .container {
@@ -578,10 +775,79 @@
             .pricing-card.popular {
                 transform: scale(1);
             }
+
+            .modal {
+                padding: 30px 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Auth Modal -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal">
+            <!-- Login Form -->
+            <div id="loginForm">
+                <div class="modal-header">
+                    <h2>Welcome Back</h2>
+                    <p>Login to your GameForge account</p>
+                </div>
+                <div class="error-message" id="loginError"></div>
+                <div class="success-message" id="loginSuccess"></div>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-submit">Login</button>
+                    </div>
+                    <div class="toggle-form">
+                        Don't have an account? <a onclick="toggleAuthForm()">Sign Up</a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Signup Form -->
+            <div id="signupForm" style="display: none;">
+                <div class="modal-header">
+                    <h2>Join GameForge</h2>
+                    <p>Create your account and start building games</p>
+                </div>
+                <div class="error-message" id="signupError"></div>
+                <div class="success-message" id="signupSuccess"></div>
+                <form onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupEmail">Email Address</label>
+                        <input type="email" id="signupEmail" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" placeholder="••••••••" minlength="6" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signupConfirm">Confirm Password</label>
+                        <input type="password" id="signupConfirm" placeholder="••••••••" minlength="6" required>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn-submit">Create Account</button>
+                    </div>
+                    <div class="toggle-form">
+                        Already have an account? <a onclick="toggleAuthForm()">Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Header -->
     <header>
         <div class="header-content">
@@ -595,9 +861,15 @@
                 <a href="#pricing">Pricing</a>
                 <a href="#docs">Docs</a>
             </nav>
-            <div class="auth-buttons">
-                <button class="btn-nav btn-login">Login</button>
-                <button class="btn-nav btn-signup">Sign Up Free</button>
+            <div class="auth-buttons" id="authButtons">
+                <button class="btn-nav btn-login" onclick="openAuthModal('login')">Login</button>
+                <button class="btn-nav btn-signup" onclick="openAuthModal('signup')">Sign Up Free</button>
+            </div>
+            <div class="user-menu" id="userMenu">
+                <div class="user-info">
+                    Welcome, <span class="user-email" id="userEmail"></span>!
+                </div>
+                <button class="btn-logout" onclick="handleLogout()">Logout</button>
             </div>
         </div>
     </header>
@@ -607,7 +879,7 @@
         <h1>Create Games Without Coding</h1>
         <p>Design 2D & 3D games with our powerful visual editor. Publish with your own custom domain.</p>
         <div class="cta-buttons">
-            <button class="btn-primary">Start Creating Now</button>
+            <button class="btn-primary" onclick="handleCreateGame()">Start Creating Now</button>
             <button class="btn-secondary">Watch Tutorial</button>
         </div>
     </section>
@@ -723,7 +995,7 @@
                         <li>1GB storage</li>
                         <li>Community support</li>
                     </ul>
-                    <button class="btn-primary">Get Started</button>
+                    <button class="btn-primary" onclick="handleCreateGame()">Get Started</button>
                 </div>
 
                 <div class="pricing-card popular">
@@ -740,7 +1012,7 @@
                         <li>Multiplayer ready</li>
                         <li>Monetization tools</li>
                     </ul>
-                    <button class="btn-primary">Start Free Trial</button>
+                    <button class="btn-primary" onclick="handleCreateGame()">Start Free Trial</button>
                 </div>
 
                 <div class="pricing-card">
@@ -758,7 +1030,7 @@
                         <li>White-label option</li>
                         <li>Custom integrations</li>
                     </ul>
-                    <button class="btn-primary">Contact Sales</button>
+                    <button class="btn-primary" onclick="handleCreateGame()">Contact Sales</button>
                 </div>
             </div>
         </section>
@@ -856,5 +1128,171 @@
             <a href="#">💬 Discord</a>
         </div>
     </footer>
+
+    <script>
+        // Check if user is logged in on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const user = localStorage.getItem('gameforgeUser');
+            if (user) {
+                showUserMenu(JSON.parse(user));
+            }
+        });
+
+        function openAuthModal(type) {
+            const authModal = document.getElementById('authModal');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+
+            authModal.classList.add('active');
+
+            if (type === 'login') {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+            }
+
+            // Clear previous messages
+            clearMessages();
+        }
+
+        function toggleAuthForm() {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+
+            if (loginForm.style.display === 'none') {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+            }
+
+            clearMessages();
+        }
+
+        function clearMessages() {
+            document.getElementById('loginError').classList.remove('show');
+            document.getElementById('signupError').classList.remove('show');
+            document.getElementById('loginSuccess').classList.remove('show');
+            document.getElementById('signupSuccess').classList.remove('show');
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            const successDiv = document.getElementById('loginSuccess');
+
+            // Simple validation
+            if (!email || !password) {
+                showError(errorDiv, 'Please fill in all fields');
+                return;
+            }
+
+            // Simulate login (in real app, this would call a backend API)
+            const user = {
+                email: email,
+                name: email.split('@')[0],
+                loginTime: new Date().toISOString()
+            };
+
+            localStorage.setItem('gameforgeUser', JSON.stringify(user));
+
+            successDiv.textContent = '✓ Login successful! Redirecting...';
+            successDiv.classList.add('show');
+
+            setTimeout(() => {
+                document.getElementById('authModal').classList.remove('active');
+                showUserMenu(user);
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+                clearMessages();
+            }, 1500);
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirm = document.getElementById('signupConfirm').value;
+            const errorDiv = document.getElementById('signupError');
+            const successDiv = document.getElementById('signupSuccess');
+
+            // Simple validation
+            if (!name || !email || !password || !confirm) {
+                showError(errorDiv, 'Please fill in all fields');
+                return;
+            }
+
+            if (password !== confirm) {
+                showError(errorDiv, 'Passwords do not match');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError(errorDiv, 'Password must be at least 6 characters');
+                return;
+            }
+
+            // Simulate signup (in real app, this would call a backend API)
+            const user = {
+                email: email,
+                name: name,
+                signupTime: new Date().toISOString()
+            };
+
+            localStorage.setItem('gameforgeUser', JSON.stringify(user));
+
+            successDiv.textContent = '✓ Account created successfully! Welcome to GameForge!';
+            successDiv.classList.add('show');
+
+            setTimeout(() => {
+                document.getElementById('authModal').classList.remove('active');
+                showUserMenu(user);
+                document.getElementById('signupName').value = '';
+                document.getElementById('signupEmail').value = '';
+                document.getElementById('signupPassword').value = '';
+                document.getElementById('signupConfirm').value = '';
+                clearMessages();
+            }, 1500);
+        }
+
+        function showError(element, message) {
+            element.textContent = '✗ ' + message;
+            element.classList.add('show');
+        }
+
+        function showUserMenu(user) {
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+            const userEmail = document.getElementById('userEmail');
+
+            authButtons.style.display = 'none';
+            userMenu.classList.add('active');
+            userEmail.textContent = user.name;
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('gameforgeUser');
+            document.getElementById('authButtons').style.display = 'flex';
+            document.getElementById('userMenu').classList.remove('active');
+        }
+
+        function handleCreateGame() {
+            const user = localStorage.getItem('gameforgeUser');
+            if (!user) {
+                openAuthModal('signup');
+            } else {
+                alert('Redirecting to game editor... (Feature coming soon!)');
+                // In a real app, this would redirect to /editor or open the game builder
+            }
+        }
+    </script>
 </body>
 </html>
