@@ -37,6 +37,10 @@
             background: linear-gradient(135deg, var(--dark) 0%, #1a1f3a 100%);
         }
 
+        .landing-page.hidden {
+            display: none;
+        }
+
         .landing-header {
             background: rgba(10, 14, 39, 0.95);
             border-bottom: 3px solid var(--primary);
@@ -308,6 +312,7 @@
             justify-content: space-between;
             align-items: center;
             height: 60px;
+            z-index: 100;
         }
 
         .studio-title {
@@ -368,6 +373,7 @@
             display: flex;
             flex: 1;
             gap: 0;
+            overflow: hidden;
         }
 
         .left-panel {
@@ -424,6 +430,7 @@
         .canvas-3d {
             width: 100%;
             height: 100%;
+            display: block;
         }
 
         .right-panel {
@@ -475,9 +482,10 @@
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
             color: #06ffa5;
-            height: 150px;
+            height: 120px;
             resize: none;
             margin-top: 8px;
+            width: 100%;
         }
 
         .bottom-panel {
@@ -485,6 +493,8 @@
             border-top: 2px solid rgba(255, 0, 110, 0.2);
             height: 200px;
             display: flex;
+            overflow: hidden;
+            z-index: 50;
         }
 
         .console-area {
@@ -508,18 +518,15 @@
             border-left-color: var(--primary);
         }
 
-        .console-warning {
-            color: var(--warning);
-            border-left-color: var(--warning);
-        }
-
         /* Game View */
         .game-view {
             display: none;
             width: 100%;
             height: 100vh;
             background: #000;
-            position: relative;
+            position: fixed;
+            top: 0;
+            left: 0;
             z-index: 1500;
         }
 
@@ -682,7 +689,6 @@
                 <div class="panel-title" style="margin-top: 20px;">🎮 Players</div>
                 <ul class="asset-list">
                     <li class="asset-item" draggable="true" ondragstart="dragObject(event, 'player')">👤 Player Spawn</li>
-                    <li class="asset-item" draggable="true" ondragstart="dragObject(event, 'spawn')">🚩 Spawn Point</li>
                 </ul>
             </div>
 
@@ -697,22 +703,20 @@
                 
                 <div class="property-group">
                     <div class="property-label">Position X</div>
-                    <input type="number" class="property-input" id="propX" value="0" onchange="updateSelected()">
+                    <input type="number" class="property-input" id="propX" value="0" step="0.5" onchange="updateSelected()">
                 </div>
                 <div class="property-group">
                     <div class="property-label">Position Y</div>
-                    <input type="number" class="property-input" id="propY" value="0" onchange="updateSelected()">
+                    <input type="number" class="property-input" id="propY" value="0" step="0.5" onchange="updateSelected()">
                 </div>
                 <div class="property-group">
                     <div class="property-label">Position Z</div>
-                    <input type="number" class="property-input" id="propZ" value="0" onchange="updateSelected()">
+                    <input type="number" class="property-input" id="propZ" value="0" step="0.5" onchange="updateSelected()">
                 </div>
 
                 <div class="panel-title" style="margin-top: 20px;">🔧 Script</div>
-                <textarea class="script-area" id="scriptArea" placeholder="// Add custom script here
-// Example:
-// this.velocity = 0;
-// this.moveSpeed = 5;"></textarea>
+                <textarea class="script-area" id="scriptArea" placeholder="// Add custom script
+// this.speed = 5;"></textarea>
                 <button class="studio-btn btn-save" onclick="updateScript()" style="width: 100%; margin-top: 10px;">Apply Script</button>
 
                 <div class="panel-title" style="margin-top: 20px;">⚙️ Physics</div>
@@ -735,7 +739,7 @@
         <div class="bottom-panel">
             <div class="console-area" id="console">
                 <div class="console-line">GameForge Studio Ready</div>
-                <div class="console-line">Right-click objects to delete | Drag objects to move</div>
+                <div class="console-line">Drag objects from left panel to canvas | Right-click to delete</div>
             </div>
         </div>
     </div>
@@ -750,7 +754,7 @@
     </div>
 
     <script>
-        // State
+        // Global State
         let currentUser = null;
         let gameObjects = [];
         let selectedObject = null;
@@ -761,6 +765,14 @@
             playerVelocity: { x: 0, y: 0, z: 0 },
             keys: {}
         };
+
+        // Check auth on load
+        window.addEventListener('load', function() {
+            const user = localStorage.getItem('gameforgeUser');
+            if (user) {
+                currentUser = JSON.parse(user);
+            }
+        });
 
         // Auth Functions
         function openAuthModal(type) {
@@ -791,7 +803,14 @@
             const name = email.split('@')[0];
             currentUser = { email, name };
             localStorage.setItem('gameforgeUser', JSON.stringify(currentUser));
+            
+            // Clear form
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            
+            // Close modal and go to studio
             document.getElementById('authModal').classList.remove('active');
+            startStudio();
         }
 
         function handleSignup(event) {
@@ -800,7 +819,15 @@
             const email = document.getElementById('signupEmail').value;
             currentUser = { name, email };
             localStorage.setItem('gameforgeUser', JSON.stringify(currentUser));
+            
+            // Clear form
+            document.getElementById('signupName').value = '';
+            document.getElementById('signupEmail').value = '';
+            document.getElementById('signupPassword').value = '';
+            
+            // Close modal and go to studio
             document.getElementById('authModal').classList.remove('active');
+            startStudio();
         }
 
         function checkAuthAndCreateGame() {
@@ -815,14 +842,18 @@
 
         // Studio Functions
         function startStudio() {
-            document.getElementById('landingPage').style.display = 'none';
+            document.getElementById('landingPage').classList.add('hidden');
             document.getElementById('studioContainer').classList.add('active');
-            initThreeJS();
-            setupDragDrop();
+            setTimeout(() => {
+                initThreeJS();
+                setupDragDrop();
+            }, 100);
         }
 
         function initThreeJS() {
             const canvas = document.getElementById('canvas3d');
+            if (!canvas) return;
+            
             const width = canvas.parentElement.clientWidth;
             const height = canvas.parentElement.clientHeight;
 
@@ -847,28 +878,33 @@
             scene.add(ambientLight);
 
             // Ground
-            const groundGeom = new THREE.PlaneGeometry(50, 50);
+            const groundGeom = new THREE.PlaneGeometry(100, 100);
             const groundMat = new THREE.MeshLambertMaterial({ color: 0x444444 });
             const ground = new THREE.Mesh(groundGeom, groundMat);
             ground.rotation.x = -Math.PI / 2;
             ground.receiveShadow = true;
+            ground.position.y = 0;
             scene.add(ground);
 
-            addConsoleLog('Three.js initialized successfully');
+            addConsoleLog('✓ Three.js engine initialized');
             animate();
 
-            // Handle clicks for selection
+            // Event listeners
             canvas.addEventListener('click', onCanvasClick);
             canvas.addEventListener('contextmenu', onCanvasRightClick);
         }
 
         function dragObject(event, type) {
+            event.dataTransfer.effectAllowed = 'copy';
             event.dataTransfer.setData('objectType', type);
         }
 
         function setupDragDrop() {
             const canvas = document.getElementById('canvas3d');
-            canvas.addEventListener('dragover', (e) => e.preventDefault());
+            canvas.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'copy';
+            });
             canvas.addEventListener('drop', dropObject);
         }
 
@@ -876,7 +912,6 @@
             event.preventDefault();
             const type = event.dataTransfer.getData('objectType');
             
-            // Convert screen coordinates to 3D world coordinates
             const rect = event.target.getBoundingClientRect();
             const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
             const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -888,11 +923,11 @@
             const intersectionPoint = new THREE.Vector3();
             raycaster.ray.intersectPlane(plane, intersectionPoint);
 
-            addObject(type, intersectionPoint.x, intersectionPoint.y, intersectionPoint.z);
+            addObject(type, intersectionPoint.x, 2, intersectionPoint.z);
         }
 
         function addObject(type, x, y, z) {
-            let geometry, material, mesh;
+            let geometry, material;
 
             const colors = {
                 cube: 0xff006e,
@@ -900,8 +935,7 @@
                 platform: 0x3a86ff,
                 ramp: 0x06ffa5,
                 cylinder: 0xffbe0b,
-                player: 0xff006e,
-                spawn: 0x06ffa5
+                player: 0xff006e
             };
 
             switch(type) {
@@ -923,23 +957,22 @@
                 case 'player':
                     geometry = new THREE.BoxGeometry(0.8, 1.8, 0.8);
                     break;
-                case 'spawn':
-                    geometry = new THREE.SphereGeometry(0.3, 16, 16);
-                    break;
+                default:
+                    geometry = new THREE.BoxGeometry(1, 1, 1);
             }
 
             material = new THREE.MeshStandardMaterial({ color: colors[type] });
-            mesh = new THREE.Mesh(geometry, material);
+            const mesh = new THREE.Mesh(geometry, material);
             mesh.castShadow = true;
             mesh.receiveShadow = true;
-            mesh.position.set(x, y || 2, z);
+            mesh.position.set(x, y, z);
 
             const obj = {
                 type: type,
                 mesh: mesh,
                 id: Date.now(),
                 gravity: true,
-                static: type === 'spawn' || type === 'spawn',
+                static: false,
                 velocity: { x: 0, y: 0, z: 0 },
                 script: ''
             };
@@ -947,7 +980,7 @@
             gameObjects.push(obj);
             scene.add(mesh);
             selectObject(obj);
-            addConsoleLog(`✓ Added ${type} at (${x.toFixed(1)}, ${y.toFixed(1)}, ${z.toFixed(1)})`);
+            addConsoleLog(`✓ Added ${type}`);
         }
 
         function selectObject(obj) {
@@ -955,7 +988,7 @@
                 selectedObject.mesh.material.emissive.setHex(0x000000);
             }
             selectedObject = obj;
-            obj.mesh.material.emissive.setHex(0xff006e);
+            obj.mesh.material.emissive.setHex(0x00ff00);
             
             document.getElementById('propX').value = obj.mesh.position.x.toFixed(2);
             document.getElementById('propY').value = obj.mesh.position.y.toFixed(2);
@@ -1019,21 +1052,21 @@
         function updateScript() {
             if (!selectedObject) return;
             selectedObject.script = document.getElementById('scriptArea').value;
-            addConsoleLog('✓ Script updated for ' + selectedObject.type);
+            addConsoleLog('✓ Script applied to ' + selectedObject.type);
         }
 
         function animate() {
             requestAnimationFrame(animate);
-            renderer.render(scene, camera);
+            if (renderer) renderer.render(scene, camera);
         }
 
         function addConsoleLog(message) {
-            const console = document.getElementById('console');
+            const consoleArea = document.getElementById('console');
             const line = document.createElement('div');
             line.className = 'console-line';
             line.textContent = message;
-            console.appendChild(line);
-            console.scrollTop = console.scrollHeight;
+            consoleArea.appendChild(line);
+            consoleArea.scrollTop = consoleArea.scrollHeight;
         }
 
         function saveGame() {
@@ -1041,19 +1074,19 @@
                 name: 'My Game',
                 objects: gameObjects.map(obj => ({
                     type: obj.type,
-                    position: obj.mesh.position,
+                    position: { x: obj.mesh.position.x, y: obj.mesh.position.y, z: obj.mesh.position.z },
                     script: obj.script,
                     gravity: obj.gravity,
                     static: obj.static
                 }))
             };
             localStorage.setItem('gameData_' + Date.now(), JSON.stringify(gameData));
-            addConsoleLog('✓ Game saved successfully');
+            addConsoleLog('✓ Game saved');
         }
 
         function playGame() {
             if (!gameObjects.some(o => o.type === 'player')) {
-                addConsoleLog('✗ Error: No player object in scene!');
+                addConsoleLog('✗ Error: Add a Player Spawn object first!');
                 return;
             }
             gameRunning = true;
@@ -1077,7 +1110,7 @@
             gameRenderer.setSize(width, height);
             gameRenderer.shadowMap.enabled = true;
 
-            // Copy objects to game scene
+            // Copy scene
             gameObjects.forEach(obj => {
                 const clonedMesh = obj.mesh.clone();
                 gameScene.add(clonedMesh);
@@ -1086,55 +1119,42 @@
             // Setup player
             const playerObj = gameObjects.find(o => o.type === 'player');
             if (playerObj) {
-                gameState.playerPos = { ...playerObj.mesh.position };
+                gameState.playerPos = { x: playerObj.mesh.position.x, y: playerObj.mesh.position.y, z: playerObj.mesh.position.z };
             }
 
             // Lighting
             const light = new THREE.DirectionalLight(0xffffff, 1);
             light.position.set(10, 20, 10);
-            light.castShadow = true;
             gameScene.add(light);
 
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
             gameScene.add(ambientLight);
 
             // Ground
-            const groundGeom = new THREE.PlaneGeometry(50, 50);
+            const groundGeom = new THREE.PlaneGeometry(100, 100);
             const groundMat = new THREE.MeshLambertMaterial({ color: 0x444444 });
             const ground = new THREE.Mesh(groundGeom, groundMat);
             ground.rotation.x = -Math.PI / 2;
-            ground.receiveShadow = true;
             gameScene.add(ground);
 
-            // Input handling
-            document.addEventListener('keydown', (e) => { gameState.keys[e.key] = true; });
-            document.addEventListener('keyup', (e) => { gameState.keys[e.key] = false; });
+            // Input
+            document.addEventListener('keydown', (e) => { gameState.keys[e.key.toLowerCase()] = true; });
+            document.addEventListener('keyup', (e) => { gameState.keys[e.key.toLowerCase()] = false; });
 
             function gameLoop() {
                 if (!gameRunning) return;
 
-                // Player movement
+                // Movement
                 const speed = 0.1;
-                if (gameState.keys['w'] || gameState.keys['W'] || gameState.keys['ArrowUp']) {
-                    gameState.playerPos.z -= speed;
-                }
-                if (gameState.keys['s'] || gameState.keys['S'] || gameState.keys['ArrowDown']) {
-                    gameState.playerPos.z += speed;
-                }
-                if (gameState.keys['a'] || gameState.keys['A'] || gameState.keys['ArrowLeft']) {
-                    gameState.playerPos.x -= speed;
-                }
-                if (gameState.keys['d'] || gameState.keys['D'] || gameState.keys['ArrowRight']) {
-                    gameState.playerPos.x += speed;
-                }
-                if (gameState.keys[' '] && gameState.playerPos.y === 5) {
-                    gameState.playerVelocity.y = 0.15;
-                }
+                if (gameState.keys['w'] || gameState.keys['arrowup']) gameState.playerPos.z -= speed;
+                if (gameState.keys['s'] || gameState.keys['arrowdown']) gameState.playerPos.z += speed;
+                if (gameState.keys['a'] || gameState.keys['arrowleft']) gameState.playerPos.x -= speed;
+                if (gameState.keys['d'] || gameState.keys['arrowright']) gameState.playerPos.x += speed;
+                if (gameState.keys[' '] && gameState.playerPos.y === 5) gameState.playerVelocity.y = 0.15;
 
                 // Gravity
                 gameState.playerVelocity.y -= 0.01;
                 gameState.playerPos.y += gameState.playerVelocity.y;
-
                 if (gameState.playerPos.y <= 5) {
                     gameState.playerPos.y = 5;
                     gameState.playerVelocity.y = 0;
@@ -1159,18 +1179,11 @@
         }
 
         function exitStudio() {
-            document.getElementById('studioContainer').classList.remove('active');
-            document.getElementById('landingPage').style.display = 'flex';
             gameObjects = [];
-            if (scene) {
-                scene.clear();
-            }
-        }
-
-        // Initialize
-        const user = localStorage.getItem('gameforgeUser');
-        if (user) {
-            currentUser = JSON.parse(user);
+            selectedObject = null;
+            if (scene) scene.clear();
+            document.getElementById('studioContainer').classList.remove('active');
+            document.getElementById('landingPage').classList.remove('hidden');
         }
     </script>
 </body>
